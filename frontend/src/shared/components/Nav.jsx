@@ -23,8 +23,8 @@ function Nav() {
 
                     <div className="nav-icons">
                         <i className="fa-solid fa-magnifying-glass"></i>
-                        <i className="fa-regular fa-user"></i>
-                        <i className="fa-solid fa-cart-shopping"></i>
+                        <Link to="/user"><i className="fa-regular fa-user"></i></Link>
+                        <Link to="/cart"><i className="fa-solid fa-cart-shopping"></i></Link>
                     </div>
                 </div>
             </div>
