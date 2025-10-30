@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Me+Again+Down+Here&display=swap');
+
+.cluster-section {
+    background-color: #e5e5e5;
+    padding: 80px 60px;
+    text-align: center;
+    padding-top: 18px;
+}
+
+.cluster-title {
+    font-family: 'Just Me Again Down Here', cursive;
+    font-size: 3rem;
+    font-weight: 500;
+    margin-bottom: 40px;
+    color: #111;
+}
+
+.cluster-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.cluster-item {
+    width: 280px;
+    text-align: left;
+}
+
+.cluster-image {
+    width: 100%;
+    height: 360px;
+    /* altura uniforme basada en la tercera imagen */
+    border-radius: 6px;
+    object-fit: cover;
+    /* recorta sin deformar */
+    object-position: center top;
+    /* mantiene encuadre natural */
+    background-color: #f3f3f3;
+    /* por si alguna no llena todo el área */
+
+}
+
+.cluster-subtitle {
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 10px 0 6px 0;
+    color: #111;
+}
+
+.cluster-description {
+    font-family: "Helvetica Neue", sans-serif;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.4;
+}

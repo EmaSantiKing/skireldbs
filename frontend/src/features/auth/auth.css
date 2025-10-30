@@ -1,0 +1,36 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #6b5c5c; /* fondo marrón/gris como la imagen */
+  font-family: Arial, sans-serif;
+}
+
+.auth-box {
+  text-align: center;
+  width: 300px;
+}
+
+.auth-title {
+  font-size: 18px;
+  margin-bottom: 25px;
+  font-weight: bold;
+  color: black;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin: 8px 0;
+  background: #d3d3d3; /* gris claro */
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+}
+
+.auth-btn:hover {
+  background: #c2c2c2;
+}
