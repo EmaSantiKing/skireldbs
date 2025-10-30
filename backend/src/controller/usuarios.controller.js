@@ -1,11 +1,11 @@
 import pool from "../../config/conexion.js";
-import bcrypt from "bcryptjs"; // más ligero y estable que bcrypt
+import bcrypt from "bcryptjs";
 
 // Obtener todos los usuarios
 export const obtenerUsuarios = async (req, res) => {
   try {
     const [rows] = await pool.query(
-      "SELECT ID_Usuario, Nombre, Email FROM usuario"
+      "SELECT ID_Usuario, Nombre, Email, contorno_pecho, contorno_cintura, contorno_cadera FROM usuario"
     );
     res.json(rows);
   } catch (err) {
@@ -17,15 +17,12 @@ export const obtenerUsuarios = async (req, res) => {
 export const obtenerUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-
     const [rows] = await pool.query(
-      "SELECT ID_Usuario, Nombre, Email FROM usuario WHERE ID_Usuario = ?",
+      "SELECT ID_Usuario, Nombre, Email, contorno_pecho, contorno_cintura, contorno_cadera FROM usuario WHERE ID_Usuario = ?",
       [id]
     );
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    if (rows.length === 0) return res.status(404).json({ error: "Usuario no encontrado" });
 
     res.json(rows[0]);
   } catch (err) {
@@ -36,7 +33,7 @@ export const obtenerUsuario = async (req, res) => {
 // Crear usuario
 export const crearUsuario = async (req, res) => {
   try {
-    const { Nombre, Email, contrasena } = req.body;
+    const { Nombre, Email, contrasena, contorno_pecho = 0, contorno_cintura = 0, contorno_cadera = 0 } = req.body;
 
     if (!Nombre || !Email || !contrasena) {
       return res.status(400).json({ error: "Faltan datos obligatorios" });
@@ -45,16 +42,11 @@ export const crearUsuario = async (req, res) => {
     const hash = await bcrypt.hash(contrasena, 10);
 
     const [result] = await pool.query(
-      "INSERT INTO usuario (Nombre, Email, constraseñaHash) VALUES (?, ?, ?)",
-      [Nombre, Email, hash]
+      "INSERT INTO usuario (Nombre, Email, PasswordHash, contorno_pecho, contorno_cintura, contorno_cadera) VALUES (?, ?, ?, ?, ?, ?)",
+      [Nombre, Email, hash, contorno_pecho, contorno_cintura, contorno_cadera]
     );
 
-    res.status(201).json({ 
-      message: "Usuario creado correctamente", 
-      id: result.insertId, 
-      Nombre, 
-      Email 
-    });
+    res.status(201).json({ message: "Usuario creado", id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -64,21 +56,17 @@ export const crearUsuario = async (req, res) => {
 export const actualizarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { Nombre, Email, contrasena } = req.body;
+    const { Nombre, Email, contrasena, contorno_pecho, contorno_cintura, contorno_cadera } = req.body;
 
     let hash;
-    if (contrasena) {
-      hash = await bcrypt.hash(contrasena, 10);
-    }
+    if (contrasena) hash = await bcrypt.hash(contrasena, 10);
 
     const [result] = await pool.query(
-      "UPDATE usuario SET Nombre = ?, Email = ?, constraseñaHash = ? WHERE ID_Usuario = ?",
-      [Nombre, Email, hash, id]
+      "UPDATE usuario SET Nombre=?, Email=?, PasswordHash=?, contorno_pecho=?, contorno_cintura=?, contorno_cadera=? WHERE ID_Usuario=?",
+      [Nombre, Email, hash, contorno_pecho, contorno_cintura, contorno_cadera, id]
     );
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    if (result.affectedRows === 0) return res.status(404).json({ error: "Usuario no encontrado" });
 
     res.json({ message: "Usuario actualizado" });
   } catch (err) {
@@ -92,13 +80,11 @@ export const borrarUsuario = async (req, res) => {
     const { id } = req.params;
 
     const [result] = await pool.query(
-      "DELETE FROM usuario WHERE ID_Usuario = ?",
+      "DELETE FROM usuario WHERE ID_Usuario=?",
       [id]
     );
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    if (result.affectedRows === 0) return res.status(404).json({ error: "Usuario no encontrado" });
 
     res.json({ message: "Usuario eliminado" });
   } catch (err) {
@@ -106,37 +92,33 @@ export const borrarUsuario = async (req, res) => {
   }
 };
 
-// Login de usuario
+// Login
 export const loginUsuario = async (req, res) => {
   try {
     const { Email, contrasena } = req.body;
-
-    if (!Email || !contrasena) {
-      return res.status(400).json({ error: "Faltan datos obligatorios" });
-    }
+    if (!Email || !contrasena) return res.status(400).json({ error: "Faltan datos obligatorios" });
 
     const [rows] = await pool.query(
-      "SELECT * FROM usuario WHERE Email = ?",
+      "SELECT * FROM usuario WHERE Email=?",
       [Email]
     );
 
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "Usuario no encontrado" });
-    }
+    if (rows.length === 0) return res.status(404).json({ error: "Usuario no encontrado" });
 
     const usuario = rows[0];
+    const match = await bcrypt.compare(contrasena, usuario.PasswordHash);
 
-    const match = await bcrypt.compare(contrasena, usuario.constraseñaHash);
-    if (!match) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
-    }
+    if (!match) return res.status(401).json({ error: "Contraseña incorrecta" });
 
     res.json({
       message: "Login exitoso",
       usuario: {
         ID_Usuario: usuario.ID_Usuario,
         Nombre: usuario.Nombre,
-        Email: usuario.Email
+        Email: usuario.Email,
+        contorno_pecho: usuario.contorno_pecho,
+        contorno_cintura: usuario.contorno_cintura,
+        contorno_cadera: usuario.contorno_cadera
       }
     });
   } catch (err) {
