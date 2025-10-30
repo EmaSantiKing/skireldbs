@@ -16,7 +16,10 @@ function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/user" element={<User />} />
+<<<<<<< HEAD
         <Route path="/auth" element={<Auth />} />
+=======
+>>>>>>> 099424e5f4c2e59040fa18452934190db6fe5421
         <Route path="/user/info" element={<Info />} />
         <Route path="*" element={<h2>404 — Página no encontrada</h2>} />
       </Routes>
