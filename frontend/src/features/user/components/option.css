@@ -1,0 +1,29 @@
+.option-card {
+  background-color: #d9d9d9;
+  border-radius: 6px;
+  padding: 16px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  height: 96px; /* NUEVO: más altura uniforme */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* NUEVO: texto abajo */
+}
+
+.option-card:hover {
+  background-color: #cfcfcf;
+  transform: translateY(-2px);
+}
+
+.option-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #111;
+}
+
+.option-description {
+  font-size: 0.85rem;
+  color: #333;
+  margin: 0;
+}
