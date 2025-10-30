@@ -2,3 +2,8 @@ body {
   width: 100%;
   margin: 0;
 }
+
+Link {
+  color: none;
+  text-decoration: none;
+}

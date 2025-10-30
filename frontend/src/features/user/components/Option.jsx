@@ -1,11 +1,15 @@
 import React from "react";
 import "./option.css";
+import { Link } from "react-router-dom";
 
-export default function Option({ title, description }) {
+export default function Option({ title, description, link }) {
+  if(!link) link = "";
+  const linked = "/user/" + {link};
+
   return (
-    <div className="option-card">
+    <Link to={{linked}} className="option-card">
       <h3 className="option-title">{title}</h3>
       <p className="option-description">{description}</p>
-    </div>
+    </Link>
   );
 }
