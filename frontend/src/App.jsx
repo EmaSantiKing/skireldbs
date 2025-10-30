@@ -7,15 +7,14 @@ import Footer from './shared/components/Footer'
 import Home from './features/home/Home';
 import Header from './shared/components/Header'
 import User from './features/user/User'
+import AppRouter from './router/Router'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <Nav/>
-      <User/>
-      <Footer/>
+      <AppRouter />
     </>
   )
 };
