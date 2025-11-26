@@ -30,19 +30,6 @@ function Nav() {
                         <li><Link to="/locales">Locales</Link></li>
                     </ul>
 
-                    {/* ICONOS DERECHA */}
-                    <div className="nav-icons">
-                        <i className="fa-solid fa-magnifying-glass"></i>
-
-                        <Link to="/user">
-                            <i className="fa-regular fa-user"></i>
-                        </Link>
-
-                        <Link to="/cart">
-                            <i className="fa-solid fa-cart-shopping"></i>
-                        </Link>
-                    </div>
-
                 </div>
             </div>
         </header>
