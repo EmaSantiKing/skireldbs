@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./auth-modal.css";
 
-export default function Login({ onClose, onLogin }) {
+export default function Login({ onClose, onLogin, modoCarrito = false }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,13 +28,18 @@ export default function Login({ onClose, onLogin }) {
       const data = await res.json();
       
       // 🔹 Guardar datos importantes en localStorage
-      localStorage.setItem("ID_Cliente", data.cliente.ID_Cliente); // para Info.jsx
-      localStorage.setItem("usuario", JSON.stringify(data.cliente)); // para otros usos
+      localStorage.setItem("ID_Cliente", data.cliente.ID_Cliente);
+      localStorage.setItem("usuario", JSON.stringify(data.cliente));
 
-      alert(`Bienvenido ${data.cliente.Nombre}!`);
-      if (onLogin) onLogin(data.cliente); // enviar datos al nav si hace falta
+      // 👇 ALERT DIFERENCIADO SEGÚN EL PROPS modoCarrito
+      if (modoCarrito) {
+        alert("Credencial válida ✅");
+      } else {
+        alert(`Bienvenido ${data.cliente.Nombre}!`);
+      }
 
-      onClose(); // cerrar modal si corresponde
+      if (onLogin) onLogin(data.cliente);
+      onClose();
     } catch (err) {
       alert(err.message);
       console.error("Error login:", err);

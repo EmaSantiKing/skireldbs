@@ -109,6 +109,12 @@ export default function SliderNav() {
             >
               ¡Bienvenido, {user.Nombre}!
             </span>
+
+            {/* 🛒 CARRITO */}
+            <Link to="/cart" className="nav-auth-btn" style={{ fontSize: "18px" }}>
+              🛒 Carrito
+            </Link>
+
             <button className="nav-auth-btn" onClick={handleLogout}>Cerrar sesión</button>
           </>
         )}
@@ -121,6 +127,7 @@ export default function SliderNav() {
           </>
         )}
       </div>
+
 
       {/* MODALES */}
       {showLogin && <Login onClose={closeLogin} onLogin={handleLogin} />}

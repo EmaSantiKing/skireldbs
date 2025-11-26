@@ -53,12 +53,8 @@ function renderProductos() {
       if (contenedorFavoritos) renderFavoritos();
     });
 
-    card.querySelector(".add-btn").addEventListener("click", () => {
-      const existing = carrito.find(item => item.id === prod.id);
-      if (existing) existing.cantidad += 1;
-      else carrito.push({...prod, cantidad: 1});
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      alert(`${prod.title} agregado al carrito`);
+      card.querySelector(".add-btn").addEventListener("click", () => {
+      abrirModalPersonalizacion(prod);
     });
   });
 }
