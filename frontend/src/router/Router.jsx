@@ -6,6 +6,8 @@ import User from "../features/user/User";
 import Info from "../features/user/pages/Info";
 import Footer from "../shared/components/Footer";
 import Auth from "../features/auth/Auth"
+import Register from "../features/auth/components/register1";
+import Login from "../features/auth/components/login";
 
 function AppRouter() {
   return (
@@ -16,11 +18,10 @@ function AppRouter() {
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/user" element={<User />} />
-<<<<<<< HEAD
         <Route path="/auth" element={<Auth />} />
-=======
->>>>>>> 099424e5f4c2e59040fa18452934190db6fe5421
         <Route path="/user/info" element={<Info />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="*" element={<h2>404 — Página no encontrada</h2>} />
       </Routes>
 

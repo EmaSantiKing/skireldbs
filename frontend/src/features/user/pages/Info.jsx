@@ -1,94 +1,162 @@
+import { useEffect, useState } from "react";
 import "./info.css";
 
 export default function Info() {
-  const userInfo = {
-    personal: {
-      dni: "12345678",
-      nombreCompleto: "Juan Pérez",
-      estadoCivil: "Soltero/a",
-      nombreElegido: "JuanMa",
-    },
-    cuenta: {
-      email: "juanperez@example.com",
-      telefono: "+54 11 2222-3333",
-      nombreUsuario: "juanma_01",
+  const [userInfo, setUserInfo] = useState(null);
+  const [editInfo, setEditInfo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
+  useEffect(() => {
+    const usuarioGuardado = localStorage.getItem("usuario");
+    if (!usuarioGuardado) {
+      console.warn("No hay usuario logueado en localStorage");
+      setLoading(false);
+      return;
+    }
+
+    let user = JSON.parse(usuarioGuardado);
+    const userId = user.ID_Cliente || user.ID_cliente || user.id;
+
+    if (!userId) {
+      console.warn("No hay ID del usuario guardado");
+      setLoading(false);
+      return;
+    }
+
+    user = { ...user, ID_Cliente: userId };
+    localStorage.setItem("usuario", JSON.stringify(user));
+
+    fetch(`http://localhost:3000/cliente/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        setUserInfo(data);
+        setEditInfo({
+          Nombre: data.Nombre,
+          Apellido: data.Apellido,
+          Email: data.Email,
+          contrasena: "",
+          contorno_pecho: data.contorno_pecho,
+          contorno_cintura: data.contorno_cintura,
+          contorno_cadera: data.contorno_cadera
+        });
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error al cargar datos:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditInfo({ ...editInfo, [name]: value });
+  };
+
+  const guardarCambios = async () => {
+    if (!userInfo?.ID_Cliente) return;
+
+    setSaving(true);
+    setMensaje("");
+
+    try {
+      const res = await fetch(`http://localhost:3000/cliente/${userInfo.ID_Cliente}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editInfo)
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || "Error inesperado");
+
+      setMensaje("Cambios guardados correctamente ✔️");
+
+      // Actualizar pantalla
+      setUserInfo({ ...userInfo, ...editInfo });
+
+    } catch (err) {
+      setMensaje("Hubo un error al guardar los cambios ❌");
+      console.error(err);
+    } finally {
+      setSaving(false);
     }
   };
+
+  if (loading) return <p>Cargando...</p>;
+  if (!userInfo) return <p>No se encontró información del usuario.</p>;
 
   return (
     <div className="info-container">
       <p className="breadcrumb">Mi perfil › Información de tu perfil</p>
 
       <h2 className="info-title">Información de tu perfil</h2>
-      <p className="info-subtitle">
-        Podés agregar, modificar o corregir tu información personal y los datos de tu cuenta.
-      </p>
 
-      {/* Información personal */}
+      {/* FORMULARIO EDITABLE */}
       <section className="info-section">
-        <h3>Información personal</h3>
+        <h3>Datos personales</h3>
 
-        <div className="info-row">
-          <span className="info-icon">🆔</span>
-          <div>
-            <p className="info-label">(Número de DNI)</p>
-            <p className="info-value">{userInfo.personal.dni}</p>
-          </div>
-        </div>
+        <label>Nombre</label>
+        <input
+          name="Nombre"
+          value={editInfo.Nombre}
+          onChange={handleChange}
+        />
 
-        <div className="info-row">
-          <span className="info-icon">👤</span>
-          <div>
-            <p className="info-label">(Nombre y apellido)</p>
-            <p className="info-value">{userInfo.personal.nombreCompleto}</p>
-          </div>
-        </div>
+        <label>Apellido</label>
+        <input
+          name="Apellido"
+          value={editInfo.Apellido}
+          onChange={handleChange}
+        />
 
-        <div className="info-row">
-          <span className="info-icon">⚧</span>
-          <div>
-            <p className="info-label">Sexo / Estado civil</p>
-            <p className="info-value">{userInfo.personal.estadoCivil}</p>
-          </div>
-        </div>
+        <label>Mail</label>
+        <input
+          name="Email"
+          value={editInfo.Email}
+          onChange={handleChange}
+        />
 
-        <div className="info-row">
-          <span className="info-icon">👥</span>
-          <div>
-            <p className="info-label">(Username)</p>
-            <p className="info-value">{userInfo.personal.nombreElegido}</p>
-          </div>
-        </div>
+        <label>Contraseña (ingresá solo si querés cambiarla)</label>
+        <input
+          type="password"
+          name="contrasena"
+          value={editInfo.contrasena}
+          onChange={handleChange}
+        />
       </section>
 
-      {/* Datos de la cuenta */}
       <section className="info-section">
-        <h3>Datos de la cuenta</h3>
+        <h3>Medidas corporales</h3>
 
-        <div className="info-row">
-          <span className="info-icon">📧</span>
-          <div>
-            <p className="info-label">(Email del usuario)</p>
-            <p className="info-value">{userInfo.cuenta.email}</p>
-          </div>
-        </div>
+        <label>Contorno de pecho</label>
+        <input
+          name="contorno_pecho"
+          value={editInfo.contorno_pecho}
+          onChange={handleChange}
+        />
 
-        <div className="info-row">
-          <span className="info-icon">📞</span>
-          <div>
-            <p className="info-label">(Número de teléfono)</p>
-            <p className="info-value">{userInfo.cuenta.telefono}</p>
-          </div>
-        </div>
+        <label>Contorno de cintura</label>
+        <input
+          name="contorno_cintura"
+          value={editInfo.contorno_cintura}
+          onChange={handleChange}
+        />
 
-        <div className="info-row">
-          <span className="info-icon">👤</span>
-          <div>
-            <p className="info-label">(Nombre de usuario)</p>
-            <p className="info-value">{userInfo.cuenta.nombreUsuario}</p>
-          </div>
-        </div>
+        <label>Contorno de cadera</label>
+        <input
+          name="contorno_cadera"
+          value={editInfo.contorno_cadera}
+          onChange={handleChange}
+        />
       </section>
+
+      <button onClick={guardarCambios} disabled={saving}>
+        {saving ? "Guardando..." : "Guardar cambios"}
+      </button>
+
+      {mensaje && <p style={{ marginTop: "10px" }}>{mensaje}</p>}
     </div>
   );
 }

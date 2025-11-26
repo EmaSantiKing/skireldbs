@@ -1,18 +1,15 @@
 import { Router } from "express";
-import {
-  obtenerPrendas,
-  obtenerPrenda,
-  crearPrenda,
-  actualizarPrenda,
-  borrarPrenda
-} from "../controller/prendas.controller.js";
+import multerUpload from "../../config/multer.js";
+import { crearPrenda, obtenerPrendas, obtenerPrenda, actualizarPrenda, eliminarPrenda } from "../controller/prendas.controller.js";
 
 const router = Router();
 
-router.get("/", obtenerPrendas);          // Todas las prendas
-router.get("/:id", obtenerPrenda);        // Una prenda por ID
-router.post("/", crearPrenda);            // Crear prenda
-router.put("/:id", actualizarPrenda);     // Actualizar prenda
-router.delete("/:id", borrarPrenda);      // Borrar prenda
+router.get("/", obtenerPrendas);
+router.get("/:id", obtenerPrenda);
+
+router.post("/", multerUpload.single("imagen"), crearPrenda);
+router.put("/:id", multerUpload.single("imagen"), actualizarPrenda);
+
+router.delete("/:id", eliminarPrenda);
 
 export default router;

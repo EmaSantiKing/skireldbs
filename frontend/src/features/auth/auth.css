@@ -2,10 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #6b5c5c; /* fondo marrón/gris como la imagen */
+
+  min-height: calc(100vh - 120px); /* evita empujar debajo del nav */
+  padding-top: 40px;               /* separa un poco del nav */
+
+  background: #6b5c5c;
   font-family: Arial, sans-serif;
 }
+
 
 .auth-box {
   text-align: center;

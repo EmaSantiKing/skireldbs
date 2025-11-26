@@ -1,67 +1,209 @@
+/* Contenedor general */
 .info-container {
   font-family: Arial, sans-serif;
-  padding: 20px 10px;
-  max-width: 960px;
+  padding: 25px 15px;
+  max-width: 900px;
   margin: auto;
+  background: #f8f9fa;
 }
 
+/* Migas de pan */
 .breadcrumb {
-  font-size: 12px;
-  color: #28a5a5;
-  margin-bottom: 10px;
+  font-size: 13px;
+  color: #27a1a1;
+  margin-bottom: 12px;
 }
 
+/* Títulos */
 .info-title {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
-  margin: 0;
+  margin-bottom: 5px;
 }
 
 .info-subtitle {
-  color: #666;
-  font-size: 13px;
+  color: #555;
+  font-size: 14px;
   margin-bottom: 20px;
 }
 
+/* Secciones del formulario */
 .info-section {
   border: 1px solid #ddd;
-  margin-top: 20px;
+  margin-top: 25px;
   background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .info-section h3 {
-  background: #f4f4f4;
+  background: #e8e8e8;
+  padding: 12px 14px;
+  font-size: 17px;
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Inputs */
+.info-section label {
+  display: block;
+  font-size: 13px;
+  color: #333;
+  margin: 12px 0 4px 0;
+  padding: 0 12px;
+}
+
+.info-section input {
+  width: calc(100% - 24px);
+  margin: auto;
+  display: block;
   padding: 10px;
-  font-size: 16px;
-  margin: 0;
-  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.2s;
 }
 
-.info-row {
+.info-section input:focus {
+  border-color: #28a5a5;
+  box-shadow: 0 0 4px rgba(40, 165, 165, 0.4);
+}
+
+/* Botón principal */
+button {
+  margin-top: 25px;
+  padding: 12px 20px;
+  background: #28a5a5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  transition: background 0.25s, transform 0.15s;
+}
+
+button:hover {
+  background: #1f8a8a;
+  transform: scale(1.02);
+}
+
+button:disabled {
+  background: #9ad1d1;
+  cursor: not-allowed;
+}
+
+/* Mensaje de estado */
+.info-container p {
+  font-size: 14px;
+}
+
+/* Fondo oscuro del modal */
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(3px);
   display: flex;
-  gap: 15px;
-  border-top: 1px solid #eee;
-  padding: 12px;
   align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Caja del modal */
+.modal-box {
+  background: white;
+  padding: 25px;
+  width: 350px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.modal-box h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.modal-box input {
+  width: 90%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+}
+
+/* Botones del modal */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+.cancel-btn {
+  background: #ddd;
+  color: #333;
+}
+
+.cancel-btn:hover {
+  background: #ccc;
+}
+
+.info-input {
+  padding: 8px;
   font-size: 14px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.info-row:first-of-type {
-  border-top: none;
-}
-
-.info-icon {
-  font-size: 18px;
-}
-
-.info-label {
-  font-size: 12px;
-  color: gray;
-  margin: 0;
-}
-
-.info-value {
-  font-size: 14px;
-  margin: 0;
+.guardar-btn {
+  margin: 15px;
+  padding: 10px 18px;
+  background: #28a5a5;
+  color: white;
   font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cancelar-btn {
+  padding: 10px 18px;
+  background: #ccc;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.confirm-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.confirm-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
 }

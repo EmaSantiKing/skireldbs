@@ -14,21 +14,23 @@ export const PrendaModel = {
     return rows[0];
   },
 
-  crear: async (nombre, descripcion, precioBase, opcionTela, opcionesColor) => {
-    const [result] = await pool.query(
-      "INSERT INTO prenda (Nombre, Descripcion, precioBase, opcionTela, opcionesColor) VALUES (?, ?, ?, ?, ?)",
-      [nombre, descripcion, precioBase, opcionTela, opcionesColor]
-    );
-    return result.insertId;
-  },
+crear: async (nombre, descripcion, precioBase, opcionTela, opcionesColor, imagen) => {
+  const [result] = await pool.query(
+    "INSERT INTO prenda (Nombre, Descripcion, precioBase, opcionTela, opcionesColor, imagen) VALUES (?, ?, ?, ?, ?, ?)",
+    [nombre, descripcion, precioBase, opcionTela, opcionesColor, imagen]
+  );
+  return result.insertId;
+},
 
-  actualizar: async (id, nombre, descripcion, precioBase, opcionTela, opcionesColor) => {
-    const [result] = await pool.query(
-      "UPDATE prenda SET Nombre=?, Descripcion=?, precioBase=?, opcionTela=?, opcionesColor=? WHERE ID_Prenda=?",
-      [nombre, descripcion, precioBase, opcionTela, opcionesColor, id]
-    );
-    return result.affectedRows > 0;
-  },
+
+ actualizar: async (id, nombre, descripcion, precioBase, opcionTela, opcionesColor, imagen) => {
+  const [result] = await pool.query(
+    "UPDATE prenda SET Nombre=?, Descripcion=?, precioBase=?, opcionTela=?, opcionesColor=?, imagen=? WHERE ID_Prenda=?",
+    [nombre, descripcion, precioBase, opcionTela, opcionesColor, imagen, id]
+  );
+  return result.affectedRows;
+},
+
 
   borrar: async (id) => {
     const [result] = await pool.query(
