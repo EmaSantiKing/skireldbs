@@ -20,16 +20,14 @@ export default function PrendasSection() {
     fetchPrendas();
   }, []);
 
-  // abrir modal
+  // abrir modal para elegir medidas/tela/color
   const pedirContornos = (prenda) => {
     setPrendaSeleccionada(prenda);
     setModalOpen(true);
   };
 
-  // agregar al carrito después de completar medidas
-  // IMPORTANTE: recibir 'medidas' como parámetro (no usar una variable global)
+  // confirmar medidas y agregar al carrito
   const confirmarContornos = (medidas) => {
-    // protección: si no recibimos medidas, no continuar
     if (!medidas || typeof medidas !== "object") {
       alert("No se recibieron las medidas. Por favor completá el formulario.");
       return;
@@ -41,17 +39,14 @@ export default function PrendasSection() {
       return;
     }
 
-    // obtener tela y color desde 'medidas' (el modal debe enviarlos)
     const tela = (medidas.telaSeleccionada ?? medidas.tela ?? p.opcionTela?.split(",")[0] ?? "").toString().trim();
     const color = (medidas.colorSeleccionado ?? medidas.color ?? p.opcionesColor?.split(",")[0] ?? "").toString().trim();
 
-    // Validación: obligar a elegir tela y color
     if (!tela || !color) {
       alert("Por favor seleccioná la tela y el color antes de agregar la prenda al carrito.");
       return;
     }
 
-    // leer carrito actual (tolerante a errores)
     let carritoActual = [];
     try {
       const raw = localStorage.getItem("carrito");
@@ -70,13 +65,11 @@ export default function PrendasSection() {
       colorSeleccionado: color,
       imagen: p.imagen ? `uploads/${p.imagen}` : "",
       cantidad: 1,
-      // medidas personalizadas (guardamos lo que venga)
       cintura: medidas.cintura ?? null,
       cadera: medidas.cadera ?? null,
       pecho: medidas.pecho ?? null
     };
 
-    // Si ya existe un item igual (mismo ID_prenda + tela + color), sumar cantidades
     const existsIndex = carritoActual.findIndex((it) =>
       it.ID_prenda && item.ID_prenda
         ? it.ID_prenda === item.ID_prenda &&
@@ -93,7 +86,6 @@ export default function PrendasSection() {
       carritoActual.push(item);
     }
 
-    // Guardar carrito normalizado
     try {
       localStorage.setItem("carrito", JSON.stringify(carritoActual));
     } catch (err) {
@@ -102,12 +94,7 @@ export default function PrendasSection() {
       return;
     }
 
-    // Emitir evento para que Cart.jsx recargue si está abierto
-    try {
-      window.dispatchEvent(new Event("carritoUpdated"));
-    } catch (err) {
-      console.warn("No se pudo emitir evento carritoUpdated:", err);
-    }
+    window.dispatchEvent(new Event("carritoUpdated"));
 
     alert("Prenda personalizada agregada al carrito 💙🛒");
 
@@ -142,7 +129,6 @@ export default function PrendasSection() {
 
             <div className="botones-card">
               <button className="btn-detalle">Ver detalle</button>
-
               <button
                 className="btn-carrito"
                 onClick={() => pedirContornos(p)}
@@ -162,7 +148,7 @@ export default function PrendasSection() {
           setModalOpen(false);
           setPrendaSeleccionada(null);
         }}
-        onConfirm={confirmarContornos} // el modal debe llamar onConfirm(medidas)
+        onConfirm={confirmarContornos}
       />
     </section>
   );

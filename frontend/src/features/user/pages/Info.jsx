@@ -76,6 +76,10 @@ export default function Info() {
       // Actualizar pantalla
       setUserInfo({ ...userInfo, ...editInfo });
 
+      // 🔹 Actualizar localStorage para que SliderNav tenga el nombre actualizado
+      const usuarioGuardado = JSON.parse(localStorage.getItem("usuario")) || {};
+      localStorage.setItem("usuario", JSON.stringify({ ...usuarioGuardado, ...editInfo }));
+
     } catch (err) {
       setMensaje("Hubo un error al guardar los cambios ❌");
       console.error(err);
